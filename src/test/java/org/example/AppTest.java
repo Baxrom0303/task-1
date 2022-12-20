@@ -2,12 +2,9 @@ package org.example;
 
 import junit.framework.TestCase;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Unit test for simple App.
@@ -15,15 +12,27 @@ import java.util.List;
 public class AppTest 
     extends TestCase
 {
-
-    public void test() {
-        Path path = Paths.get("file/myFile0.csv");
-        CityService cityService = new CityService(path.toAbsolutePath().toString());
-        List<City> cities = cityService.getCities();
+    private CityService cityService = new CityService();
+    List<City> cities = cityService.getCities();
+    public void testA(){
         cities.sort(Comparator.comparing(City::getName));
         printCities(cities);
+    }
+
+    public void testB(){
         cities.sort(Comparator.comparing(City::getCode));
         printCities(cities);
+    }
+
+    public void testC(){
+        Map<Integer,String> cityMap = cityService.getCityMap();
+        for (Map.Entry<Integer,String> entry : cityMap.entrySet()){
+            System.out.println(entry.getKey() + " - " + entry.getValue());
+        }
+    }
+
+    public void testCityCodeDuplicateCount(){
+        System.out.println(cityService.getCount());
     }
 
     private void printCities(List<City> cities){

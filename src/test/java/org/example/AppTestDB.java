@@ -15,8 +15,7 @@ public class AppTestDB extends TestCase {
 
 
     public void test() {
-        Path path = Paths.get("file/myFile0.csv");
-        CityService cityService = new CityService(path.toAbsolutePath().toString());
+        CityService cityService = new CityService();
         try {
             Connection connection = DriverManager.getConnection("jdbc:derby:task-1;create=true");
             CityRepository cityRepository = new CityRepository(cityService,connection);
