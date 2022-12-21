@@ -35,6 +35,12 @@ public class AppTest
         System.out.println(cityService.getCount());
     }
 
+    public void testSortStringOfArrays(){
+        List<String[]> strings = cityService.getStringOfArrays();
+        cityService.bubbleSort(strings,0);
+        strings.forEach(strings1 -> System.out.println(strings1[0] + ", " + strings1[1]));
+    }
+
     private void printCities(List<City> cities){
         cities.forEach(city -> {
             System.out.println(city.getCode() + "," + city.getName());

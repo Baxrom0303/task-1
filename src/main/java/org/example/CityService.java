@@ -1,7 +1,7 @@
 package org.example;
 
 import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
+import com.opencsv.exceptions.CsvException;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,15 +15,19 @@ public class CityService {
 
     private List<City> cities;
     private Map<Integer,String> cityMap = new TreeMap<>();
+
+    private List<String[]> stringOfArrays;
     private int count;
     public CityService() {
         cities = new ArrayList<>();
+        stringOfArrays = new ArrayList<>();
         try {
             CSVReader reader = new CSVReader(new FileReader(Paths.get("file/myFile0.csv").toAbsolutePath().toString()));
             String[] nextLine;
             int index = 0;
             while ((nextLine = reader.readNext()) != null){
                 if (index > 0){
+                    if (index < 10) stringOfArrays.add(nextLine);
                     Integer code = Integer.parseInt(nextLine[0].trim());
                     String name = nextLine[1].trim();
                     if (cityMap.containsKey(code)){
@@ -35,8 +39,20 @@ public class CityService {
                 }
                 index++;
             }
-        } catch (IOException | CsvValidationException e) {
+        } catch (IOException | CsvException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void bubbleSort(List<String[]> strings,int sortType){
+        for (int i = 0; i < strings.size() - 1; i++){
+            for (int j = 0; j < strings.size() - i - 1; j++){
+                if (sortType == 0 ? (Integer.parseInt(strings.get(j)[0].trim()) > Integer.parseInt(strings.get(j + 1)[0].trim())) : (Integer.parseInt(strings.get(j)[0].trim()) < Integer.parseInt(strings.get(j + 1)[0].trim()))){
+                    String[] temp = strings.get(j);
+                    strings.set(j,strings.get(j + 1));
+                    strings.set(j+1,temp);
+                }
+            }
         }
     }
 
@@ -50,6 +66,10 @@ public class CityService {
 
     public int getCount(){
         return this.count;
+    }
+
+    public List<String[]> getStringOfArrays(){
+        return this.stringOfArrays;
     }
 
 }
